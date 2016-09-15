@@ -5,15 +5,16 @@ package com.example.johnnie.ottawadriving.explore;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.johnnie.ottawadriving.R;
 import com.example.johnnie.ottawadriving.listcomponent.MyListFragment;
@@ -23,11 +24,10 @@ import java.util.ArrayList;
 
 public class ExploreActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-        ExploreSlidingBasicFragment.basicFragmentPageSelectedListener,
-        MyListFragment.OnListItemClicked{
+        MyListFragment.OnListFragmentSelected{
 
 
-
+    ViewPager mViewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,12 +57,13 @@ public class ExploreActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        mViewPager = (ViewPager)findViewById(R.id.mainPager);
+        if (mViewPager!=null){
+            mViewPager.setAdapter(new MyFragmentPagerAdapter(getSupportFragmentManager()));
+        }else if(mViewPager == null){
+            Toast.makeText(this,"view page null",Toast.LENGTH_SHORT).show();
+        }
 
-
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            ExploreSlidingBasicFragment fragment = new ExploreSlidingBasicFragment();
-            transaction.add(R.id.sample_content_fragment, fragment);
-            transaction.commit();
 
 
         //for Test models
@@ -178,16 +179,14 @@ public class ExploreActivity extends AppCompatActivity
 
 
 
-
+    /*
+    *    Here to do database query and pass the result of type ArrayList<PersonModel>
+    *     as the parameter 'models' to fragment.displayListView();
+    *
+     */
     @Override
-    public void onBasicFragmentPageSelected(TextView view,String category) {
-        view.setText(category);
-
-    }
-
-
-    @Override
-    public void onListItemClicked() {
-
+    public void OnListFragmentSelected(MyListFragment fragment,String title) {
+        Toast.makeText(this, title,Toast.LENGTH_SHORT).show();
+        fragment.displayListView(models);
     }
 }

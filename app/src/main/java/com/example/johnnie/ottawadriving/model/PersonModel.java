@@ -1,9 +1,11 @@
 package com.example.johnnie.ottawadriving.model;
 
+import java.io.Serializable;
+
 /**
  * Created by Johnnie on 2016-09-14.
  */
-public class PersonModel {
+public class PersonModel implements Serializable{
 
     private long Id;
     private String name;
