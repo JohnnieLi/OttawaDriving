@@ -14,7 +14,10 @@ import com.example.johnnie.ottawadriving.listcomponent.MyListFragment;
 
 /**
  * Created by Johnnie on 2016-09-15.
+ * This is a test class for page adapter, never used in this application
  */
+
+
 class MyPagerAdapter extends PagerAdapter {
 
     final String[] TITLES = {"HOME", "Information", "Address", "FAQ"};

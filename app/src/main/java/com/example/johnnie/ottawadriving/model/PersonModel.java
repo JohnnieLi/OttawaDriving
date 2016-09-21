@@ -13,6 +13,7 @@ public class PersonModel implements Serializable{
     private String information;
     private String phoneNumber;
     private String email;
+    private String imageUri;
 
 
 
@@ -71,5 +72,4 @@ public class PersonModel implements Serializable{
         this.imageUri = imageUri;
     }
 
-    private String imageUri;
 }

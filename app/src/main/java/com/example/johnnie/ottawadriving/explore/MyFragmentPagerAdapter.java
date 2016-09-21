@@ -39,9 +39,8 @@ public class MyFragmentPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
 
-        //return TestFragment.newInstance(position);
-        MyListFragment listFragment = new MyListFragment();
-       // listFragment.displayListView(models);
+        // pass title to listFragment
+        MyListFragment listFragment = MyListFragment.newInstance(tabtitles[position]);
         return listFragment;
     }
 

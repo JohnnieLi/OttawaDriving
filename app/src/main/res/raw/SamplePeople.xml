@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<people>
+
+    <!--   ++++++++++bmw dealers+++++++++++++  -->
+    <person>
+        <address> 835 Carling Ave,Ottawa </address>
+        <email>dealer</email>
+        <name>bmw</name>
+        <information>Otto's BMW</information>
+        <phone>844-267-4826</phone>
+        <imageUri>http://ottosplanet.com/images/main_bmw.png</imageUri>
+    </person>
+
+
+    <person>
+        <address> 1040 Ogilvie Rd, Gloucester, ON K1J 7T3 </address>
+        <email>dealer</email>
+        <name>bmw</name>
+        <information>Elite BMW</information>
+        <phone>844-267-4826</phone>
+        <imageUri>http://cdn-user.dealerrater.com/uimages/31872/main-31872-bb963cf239c0_large.jpg</imageUri>
+    </person>
+
+
+    <!--todo:change imageUri for others-->
+    <!-- +++++++++++Audi Dealers++++++++++++++++++++ -->
+    <person>
+        <address> 295 West Hunt Club Rd,Ottawa </address>
+        <email>dealer</email>
+        <name>audi</name>
+        <information>Mark Motors of Ottawa</information>
+        <phone>(613) 723-1221</phone>
+        <imageUri>http://audi.markmotorsofottawa.com/content/uploads/sites/5/2015/08/MM-Audi-Coming-Soon-1500x500.jpg</imageUri>
+    </person>
+
+    <person>
+        <address> 458 Montreal Rd, Ottawa </address>
+        <email>dealer</email>
+        <name>audi</name>
+        <information>Mark Motors of Ottawa</information>
+        <phone>(613) 746-3533</phone>
+        <imageUri>http://audi.markmotorsofottawa.com/content/uploads/sites/5/2014/04/mm_sliders.jpg</imageUri>
+    </person>
+
+
+    <person>
+    <address> 611 Montreal Rd, Ottawa </address>
+    <email>dealer</email>
+    <name>audi</name>
+    <information>Mark Motors of Ottawa</information>
+    <phone>(613) 749-4275</phone>
+        <imageUri>https://markmotorsporsche.com/images/dealer_images/676/banners/homepage/256d9a8226a6e06be2a5f6b4aea37e66.jpg</imageUri>
+    </person>
+
+
+    <!-- +++++++++++++++Mercedes dealers++++++++++++++++++++ -->
+    <person>
+        <address> 400 Hunt Club Rd, ottawa </address>
+        <email>dealer</email>
+        <name>mercedes</name>
+        <information>Star Motors of Ottawa</information>
+        <phone>(613) 737-7827</phone>
+        <imageUri>https://starmotors.mercedes-benz-vans.ca/images/promos/contact-info/36-en.jpg?1425253651</imageUri>
+    </person>
+
+
+    <person>
+        <address> 1339 Boulevard la Vérendrye O, Gatineau, QC J8T 8K2 </address>
+        <email>dealer</email>
+        <name>mercedes</name>
+        <information>Mercedes-Benz Gatineau</information>
+        <phone>(613) 745-9000</phone>
+        <imageUri>http://cdn-user.dealerrater.com/uimages/33553/main-33553-d0c01a7b23be.jpg</imageUri>
+    </person>
+</people>
+
+
+
+
+
+
+
+

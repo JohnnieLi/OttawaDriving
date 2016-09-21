@@ -3,31 +3,39 @@ package com.example.johnnie.ottawadriving.explore;
 
 
 import android.content.res.Configuration;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.johnnie.ottawadriving.R;
 import com.example.johnnie.ottawadriving.listcomponent.MyListFragment;
+import com.example.johnnie.ottawadriving.localdatabase.PersonDbAdapter;
 import com.example.johnnie.ottawadriving.model.PersonModel;
+import com.example.johnnie.ottawadriving.utils.PersonPullParser;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ExploreActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         MyListFragment.OnListFragmentSelected{
 
-
+    private PersonDbAdapter dbHelper;
     ViewPager mViewPager;
+    private List<PersonModel> mModels;
+    private MyListFragment mFragment;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +54,8 @@ public class ExploreActivity extends AppCompatActivity
 //            }
 //        });
 
+        //create sample database
+        setLocalData();
 
         // drawer and navigation view
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -57,49 +67,37 @@ public class ExploreActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+
+
         mViewPager = (ViewPager)findViewById(R.id.mainPager);
         if (mViewPager!=null){
             mViewPager.setAdapter(new MyFragmentPagerAdapter(getSupportFragmentManager()));
-        }else if(mViewPager == null){
-            Toast.makeText(this,"view page null",Toast.LENGTH_SHORT).show();
         }
 
 
 
-        //for Test models
-        if(models.size()==0){
-            createModels();
+
+    }
+
+    //initialize database and load data
+    public void setLocalData() {
+        dbHelper = new PersonDbAdapter(this);
+        dbHelper.open();
+        List<PersonModel> models = dbHelper.fetchAllPeople();
+        if (models.size() == 0) {
+            createData();
         }
+
     }
 
- //========================Test models====================
-    private ArrayList<PersonModel> models = new ArrayList<>();
-    PersonModel person1 = new PersonModel();
-    PersonModel person2 = new PersonModel();
-    PersonModel person3 = new PersonModel();
+    private void createData() {
+        PersonPullParser parser = new PersonPullParser();
+        List<PersonModel> people = parser.parseXML(this);
+        for (PersonModel person : people) {
+            dbHelper.createDealer(person);
+        }
 
-    public void createModels(){
-        person1.setAddress("address1");
-        person1.setInformation("info1");
-        person1.setName("person1");
-        person1.setPhoneNumber("11111");
-
-        person2.setAddress("address2");
-        person2.setInformation("info2");
-        person2.setName("person2");
-        person2.setPhoneNumber("2222");
-
-        person3.setAddress("address3");
-        person3.setInformation("info3");
-        person3.setName("person3");
-        person3.setPhoneNumber("33333");
-
-        models.add(person1);
-        models.add(person2);
-        models.add(person3);
     }
-
-
 
 
     // ======== back tab======
@@ -167,6 +165,10 @@ public class ExploreActivity extends AppCompatActivity
     }
 
 
+    // =========search data by name
+
+
+
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
@@ -186,7 +188,23 @@ public class ExploreActivity extends AppCompatActivity
      */
     @Override
     public void OnListFragmentSelected(MyListFragment fragment,String title) {
-        Toast.makeText(this, title,Toast.LENGTH_SHORT).show();
-        fragment.displayListView(models);
+        mFragment = fragment;
+        new AsyncTask<String, Void, List<PersonModel>>() {
+
+            @Override
+            protected List<PersonModel> doInBackground(String... name) {
+                return dbHelper.fetchPersonByName(name[0]);
+
+            }
+            @Override
+            public void onPostExecute(List<PersonModel> models) {
+                mModels = models;
+                mFragment.displayListView(mModels);
+            }
+        }.execute(title);
+
+
+
+
     }
 }

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import com.example.johnnie.ottawadriving.R;
 import com.example.johnnie.ottawadriving.model.PersonModel;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -24,6 +26,7 @@ public class MyListFragment extends Fragment {
     final static String ARG_POSITION = "position";
     int mCurrentPosition = -1;
     private View rootView;
+    private String mTitle;
     private OnListFragmentSelected mCallbacks;
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -39,11 +42,11 @@ public class MyListFragment extends Fragment {
      * Create a new instance of CountingFragment, providing "num"
      * as an argument.
      */
-    public static MyListFragment newInstance(ArrayList<PersonModel> models) {
+    public static MyListFragment newInstance(String title) {
         MyListFragment f = new MyListFragment();
         // Supply num input as an argument.
         Bundle args = new Bundle();
-        args.putSerializable("models", models);
+        args.putString("title",title);
         f.setArguments(args);
         return f;
     }
@@ -59,7 +62,8 @@ public class MyListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        Bundle args = getArguments();
+        mTitle = args.getString("title");
 
     }
 
@@ -68,10 +72,8 @@ public class MyListFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-
         // to set models to displayListView();
-        mCallbacks.OnListFragmentSelected(this, "title1");
+        mCallbacks.OnListFragmentSelected(this, mTitle);
     }
 
     @Override
@@ -117,9 +119,7 @@ public class MyListFragment extends Fragment {
     }
 
 
-    public void displayListView(ArrayList<PersonModel> models) {
-        TextView text = (TextView) rootView.findViewById(R.id.list_frag_text);
-        text.setText("one");
+    public void displayListView(List<PersonModel> models) {
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView_items);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getActivity());
