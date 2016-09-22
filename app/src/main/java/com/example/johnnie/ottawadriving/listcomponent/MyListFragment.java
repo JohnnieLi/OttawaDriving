@@ -1,6 +1,7 @@
 package com.example.johnnie.ottawadriving.listcomponent;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,11 +10,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.johnnie.ottawadriving.R;
+import com.example.johnnie.ottawadriving.mapcomponent.MapActivity;
 import com.example.johnnie.ottawadriving.model.PersonModel;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +35,7 @@ public class MyListFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    private Button mapViewButton;
 
 
     public interface OnListFragmentSelected {
@@ -89,8 +94,9 @@ public class MyListFragment extends Fragment {
 
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.list_frag, container, false);
+        mapViewButton = (Button) rootView.findViewById(R.id.list_map_button);
+        mapViewButton.setClickable(false);
 
-//            displayListView(models);
         return rootView;
     }
 
@@ -119,13 +125,23 @@ public class MyListFragment extends Fragment {
     }
 
 
-    public void displayListView(List<PersonModel> models) {
+    public void displayListView(final List<PersonModel> models) {
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView_items);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
         mAdapter = new RecyclerListAdapter(models);
         mRecyclerView.setAdapter(mAdapter);
+
+        mapViewButton.setClickable(true);
+        mapViewButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), MapActivity.class);
+                intent.putExtra("PersonModels",(Serializable)models);
+                startActivity(intent);
+            }
+        });
     }
 
 }
