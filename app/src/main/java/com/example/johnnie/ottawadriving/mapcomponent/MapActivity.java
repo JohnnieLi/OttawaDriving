@@ -47,7 +47,7 @@ public class MapActivity extends AppCompatActivity implements MapFragment.OnMapF
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,true);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new RecyclerListAdapter(models);
+        mAdapter = new RecyclerListAdapter(models,this);
         mRecyclerView.setAdapter(mAdapter);
 
 

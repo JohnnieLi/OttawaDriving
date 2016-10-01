@@ -1,7 +1,11 @@
 package com.example.johnnie.ottawadriving.listcomponent;
 
+import android.app.ActivityOptions;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -10,11 +14,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.johnnie.ottawadriving.R;
+import com.example.johnnie.ottawadriving.detailactivity.DetailActivity;
+import com.example.johnnie.ottawadriving.explore.ExploreActivity;
+import com.example.johnnie.ottawadriving.mapcomponent.MapActivity;
 import com.example.johnnie.ottawadriving.model.PersonModel;
 
 import java.io.InputStream;
+import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
@@ -25,6 +34,8 @@ import java.util.List;
 public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapter.ViewHolder> {
 
     private List<PersonModel> models;
+    private Context mContext;
+    private PersonModel currentModel;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -35,20 +46,58 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
         public TextView info;
         public TextView address;
         public TextView phone;
+        public PersonModel model;
 
-        public ViewHolder(View v) {
+        public ViewHolder(View v, final Context context) {
             super(v);
             info = (TextView)v.findViewById(R.id.card_info);
             img = (ImageView)v.findViewById(R.id.card_img);
             address =  (TextView)v.findViewById(R.id.card_address);
             phone = (TextView)v.findViewById(R.id.card_phone);
 
+
+            v.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(v.getContext(), DetailActivity.class);
+
+                    // pass the image and the model to detail activity
+                    img.setDrawingCacheEnabled(true);
+                    Bitmap bitmap = img.getDrawingCache();
+                    intent.putExtra("imageResource", bitmap);
+                    intent.putExtra("model",model);
+
+
+                    // create the transition animation - the images in the layouts
+                    // of both activities are defined with android:transitionName="robot"
+                    ActivityOptions options;
+                    if(context instanceof  ExploreActivity){
+                        options = ActivityOptions
+                               .makeSceneTransitionAnimation((ExploreActivity)context,img,"image");
+                        Log.d("RECYCLELIST","ExploreActivity");
+                   }else {
+                         options = ActivityOptions
+                               .makeSceneTransitionAnimation((MapActivity)context,img,"image");
+                        Log.d("RECYCLELIST","MapActivity");
+                   }
+                    // start the new activity
+                   context.startActivity(intent, options.toBundle());
+
+                }
+            });
+
+        }
+
+
+        public void setModel(PersonModel model){
+            this.model = model;
         }
 
     }
 
-    public RecyclerListAdapter(List<PersonModel> models) {
+    public RecyclerListAdapter(List<PersonModel> models, Context context) {
         this.models = models;
+        this.mContext = context;
     }
 
     @Override
@@ -60,17 +109,19 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
         //todo: set the card view size,margins, paddings and layout parameters
 
 
-        ViewHolder vh = new ViewHolder(v);
+        ViewHolder vh = new ViewHolder(v, mContext);
         return vh;
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
 
-        PersonModel model = models.get(position);
-        holder.info.setText(model.getInformation());
-        holder.address.setText(model.getAddress());
-        holder.phone.setText(model.getPhoneNumber());
+        currentModel = models.get(position);
+        holder.setModel(currentModel);
+        holder.info.setText(currentModel.getInformation());
+        holder.address.setText(currentModel.getAddress());
+        holder.phone.setText(currentModel.getPhoneNumber());
+
         new AsyncTask<String, Integer, Bitmap>(){
             @Override
             protected void onPreExecute(){
@@ -106,7 +157,8 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
             protected void onCancelled(){
                 // Handle case where you called cancel
             }
-        }.execute(model.getImageUri());
+        }.execute(currentModel.getImageUri());
+
 
 
     }

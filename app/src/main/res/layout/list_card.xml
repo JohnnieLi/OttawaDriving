@@ -24,7 +24,8 @@
             android:id="@+id/card_img"
             android:layout_width="120dp"
             android:layout_height="120dp"
-            android:background="#f9f7f7" />
+            android:background="#f9f7f7"
+            android:transitionName="image"/>
 
         <TextView
             android:id="@+id/card_info"

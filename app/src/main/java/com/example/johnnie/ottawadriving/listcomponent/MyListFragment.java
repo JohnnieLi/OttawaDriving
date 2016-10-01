@@ -130,7 +130,7 @@ public class MyListFragment extends Fragment {
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new RecyclerListAdapter(models);
+        mAdapter = new RecyclerListAdapter(models,getContext());
         mRecyclerView.setAdapter(mAdapter);
 
         mapViewButton.setClickable(true);

@@ -9,10 +9,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.example.johnnie.ottawadriving.listcomponent.MyListFragment;
-import com.example.johnnie.ottawadriving.listcomponent.TestFragment;
-import com.example.johnnie.ottawadriving.model.PersonModel;
-
-import java.util.ArrayList;
 
 
 /**
