@@ -33,7 +33,7 @@ public class ExploreActivity extends AppCompatActivity
 
     private PersonDbAdapter dbHelper;
     ViewPager mViewPager;
-    private List<PersonModel> mModels;
+    private ArrayList<PersonModel> mModels;
     private MyListFragment mFragment;
 
 
@@ -71,7 +71,7 @@ public class ExploreActivity extends AppCompatActivity
 
         mViewPager = (ViewPager)findViewById(R.id.mainPager);
         if (mViewPager!=null){
-            mViewPager.setAdapter(new MyFragmentPagerAdapter(getSupportFragmentManager()));
+            mViewPager.setAdapter(new MyFragmentPagerAdapter(getSupportFragmentManager(),dbHelper));
         }
 
 
@@ -86,6 +86,7 @@ public class ExploreActivity extends AppCompatActivity
         List<PersonModel> models = dbHelper.fetchAllPeople();
         if (models.size() == 0) {
             createData();
+            dbHelper.close();
         }
 
     }
@@ -189,15 +190,15 @@ public class ExploreActivity extends AppCompatActivity
     @Override
     public void OnListFragmentSelected(MyListFragment fragment,String title) {
         mFragment = fragment;
-        new AsyncTask<String, Void, List<PersonModel>>() {
+        new AsyncTask<String, Void, ArrayList<PersonModel>>() {
 
             @Override
-            protected List<PersonModel> doInBackground(String... name) {
+            protected ArrayList<PersonModel> doInBackground(String... name) {
                 return dbHelper.fetchPersonByName(name[0]);
 
             }
             @Override
-            public void onPostExecute(List<PersonModel> models) {
+            public void onPostExecute(ArrayList<PersonModel> models) {
                 mModels = models;
                 mFragment.displayListView(mModels);
             }

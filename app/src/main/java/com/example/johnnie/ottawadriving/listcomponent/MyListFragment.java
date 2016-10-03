@@ -2,7 +2,9 @@ package com.example.johnnie.ottawadriving.listcomponent;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +16,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.johnnie.ottawadriving.R;
+import com.example.johnnie.ottawadriving.localdatabase.PersonDbAdapter;
 import com.example.johnnie.ottawadriving.mapcomponent.MapActivity;
 import com.example.johnnie.ottawadriving.model.PersonModel;
 
@@ -36,11 +39,16 @@ public class MyListFragment extends Fragment {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private Button mapViewButton;
+    private ArrayList<PersonModel> mModels;
+    private PersonDbAdapter mDbHelper;
+
+
 
 
     public interface OnListFragmentSelected {
         void OnListFragmentSelected(MyListFragment fragment, String title);
     }
+
 
 
     /**
@@ -69,8 +77,10 @@ public class MyListFragment extends Fragment {
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
         mTitle = args.getString("title");
+        mDbHelper = new PersonDbAdapter(getActivity());
+        mDbHelper.open();
 
-    }
+        }
 
 
     // called after rootView created
@@ -78,7 +88,7 @@ public class MyListFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         // to set models to displayListView();
-        mCallbacks.OnListFragmentSelected(this, mTitle);
+
     }
 
     @Override
@@ -96,6 +106,20 @@ public class MyListFragment extends Fragment {
         rootView = inflater.inflate(R.layout.list_frag, container, false);
         mapViewButton = (Button) rootView.findViewById(R.id.list_map_button);
         mapViewButton.setClickable(false);
+        new AsyncTask<String, Void, ArrayList<PersonModel>>() {
+
+            @Override
+            protected ArrayList<PersonModel> doInBackground(String... name) {
+                return mDbHelper.fetchPersonByName(name[0]);
+
+            }
+            @Override
+            public void onPostExecute(ArrayList<PersonModel> models) {
+                mModels = models;
+                displayListView(mModels);
+            }
+        }.execute(mTitle);
+
 
         return rootView;
     }
@@ -114,6 +138,8 @@ public class MyListFragment extends Fragment {
             throw new ClassCastException(activity.toString()
                     + " must implement OnHeadlineSelectedListener");
         }
+
+
     }
 
     @Override
@@ -125,7 +151,7 @@ public class MyListFragment extends Fragment {
     }
 
 
-    public void displayListView(final List<PersonModel> models) {
+    public void displayListView(final ArrayList<PersonModel> models) {
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView_items);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getActivity());
@@ -138,7 +164,7 @@ public class MyListFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), MapActivity.class);
-                intent.putExtra("PersonModels",(Serializable)models);
+                intent.putExtra("PersonModels",models);
                 startActivity(intent);
             }
         });

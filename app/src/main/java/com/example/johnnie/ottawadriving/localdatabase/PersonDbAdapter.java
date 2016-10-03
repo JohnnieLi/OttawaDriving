@@ -10,13 +10,14 @@ import android.util.Log;
 
 import com.example.johnnie.ottawadriving.model.PersonModel;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Johnnie on 2016-09-21.
  */
-public class PersonDbAdapter {
+public class PersonDbAdapter implements Serializable{
     public static final String KEY_ROWID = "_id";
 
     public static final String KEY_NAME = "name";
@@ -49,7 +50,7 @@ public class PersonDbAdapter {
 
 
     // Inner class: DatabaseHelper, create database.
-    private static class DatabaseHelper extends SQLiteOpenHelper {
+    private static class DatabaseHelper extends SQLiteOpenHelper{
 
         DatabaseHelper(Context context) {
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -111,8 +112,8 @@ public class PersonDbAdapter {
     }
 
 
-    public List<PersonModel> fetchPersonByName(String inputText) throws SQLException {
-        List<PersonModel> models = new ArrayList<>();
+    public ArrayList<PersonModel> fetchPersonByName(String inputText) throws SQLException {
+        ArrayList<PersonModel> models = new ArrayList<>();
         Log.w(TAG, inputText);
         Cursor mCursor;
         if (inputText == null  ||  inputText.length () == 0)  {

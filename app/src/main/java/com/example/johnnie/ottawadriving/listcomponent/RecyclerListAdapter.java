@@ -26,6 +26,7 @@ import java.io.InputStream;
 import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,7 +34,7 @@ import java.util.List;
  */
 public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapter.ViewHolder> {
 
-    private List<PersonModel> models;
+    private ArrayList<PersonModel> models;
     private Context mContext;
     private PersonModel currentModel;
 
@@ -69,16 +70,14 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
 
 
                     // create the transition animation - the images in the layouts
-                    // of both activities are defined with android:transitionName="robot"
+                    // of both activities are defined with android:transitionName="image"
                     ActivityOptions options;
                     if(context instanceof  ExploreActivity){
                         options = ActivityOptions
                                .makeSceneTransitionAnimation((ExploreActivity)context,img,"image");
-                        Log.d("RECYCLELIST","ExploreActivity");
                    }else {
                          options = ActivityOptions
                                .makeSceneTransitionAnimation((MapActivity)context,img,"image");
-                        Log.d("RECYCLELIST","MapActivity");
                    }
                     // start the new activity
                    context.startActivity(intent, options.toBundle());
@@ -95,7 +94,7 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
 
     }
 
-    public RecyclerListAdapter(List<PersonModel> models, Context context) {
+    public RecyclerListAdapter(ArrayList<PersonModel> models, Context context) {
         this.models = models;
         this.mContext = context;
     }
@@ -110,6 +109,8 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
 
 
         ViewHolder vh = new ViewHolder(v, mContext);
+
+
         return vh;
     }
 
@@ -131,7 +132,7 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
             protected Bitmap doInBackground(String... params){
                 try {
                     URL url = new URL(params[0]);
-
+                    Log.d("RECYCLE", "URL: "+url.toString());
                     HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
                     if (httpCon.getResponseCode() != 200) {
                         throw new Exception("Failed to connect");

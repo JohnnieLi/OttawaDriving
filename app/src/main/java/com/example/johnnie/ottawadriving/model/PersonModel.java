@@ -1,5 +1,6 @@
 package com.example.johnnie.ottawadriving.model;
 
+
 import java.io.Serializable;
 
 /**
@@ -16,6 +17,10 @@ public class PersonModel implements Serializable{
     private String imageUri;
 
 
+    public PersonModel(){
+
+    }
+
 
     public String getInformation() {
         return information;
@@ -24,6 +29,7 @@ public class PersonModel implements Serializable{
     public void setInformation(String information) {
         this.information = information;
     }
+
     public long getId() {
         return Id;
     }
@@ -71,5 +77,6 @@ public class PersonModel implements Serializable{
     public void setImageUri(String imageUri) {
         this.imageUri = imageUri;
     }
+
 
 }
