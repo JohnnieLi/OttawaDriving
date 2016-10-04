@@ -94,6 +94,8 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
 
     }
 
+
+
     public RecyclerListAdapter(ArrayList<PersonModel> models, Context context) {
         this.models = models;
         this.mContext = context;
@@ -108,12 +110,13 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
         //todo: set the card view size,margins, paddings and layout parameters
 
 
-        ViewHolder vh = new ViewHolder(v, mContext);
+        return new ViewHolder(v, mContext);
 
-
-        return vh;
     }
 
+
+    //this holder is the viewHolder we created in onCreateViewHolder method
+    // this method will handel each view(cardView in this case), position is the index of every single cardView
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
 

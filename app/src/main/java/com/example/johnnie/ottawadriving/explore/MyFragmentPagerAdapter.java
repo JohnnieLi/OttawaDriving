@@ -29,12 +29,11 @@ public class MyFragmentPagerAdapter extends FragmentPagerAdapter {
     final int PAGE_COUNT = 3;
     // Tab Titles
     private String tabtitles[] = new String[] { "bmw","audi","mercedes" };
-    Context context;
-    PersonDbAdapter mDbHelper;
 
-    public MyFragmentPagerAdapter(FragmentManager fm, PersonDbAdapter dbHelper) {
+
+    public MyFragmentPagerAdapter(FragmentManager fm) {
         super(fm);
-        mDbHelper = dbHelper;
+
     }
 
     @Override
@@ -42,9 +41,11 @@ public class MyFragmentPagerAdapter extends FragmentPagerAdapter {
         return PAGE_COUNT;
     }
 
+
+    //initialize the different fragments when the page selected, pass the title
+    //so the listFragment will use title as the search key word.
     @Override
     public Fragment getItem(int position) {
-        Log.d("MYFRAGMENTADAPTER", "position: "+Integer.toString(position));
         switch (position){
             case 0:
                 mMyListFragment =  MyListFragment.newInstance("bmw");
@@ -61,8 +62,6 @@ public class MyFragmentPagerAdapter extends FragmentPagerAdapter {
                 mMyListFragment =  MyListFragment.newInstance("bmw");
 
         }
-
-
         return mMyListFragment;
     }
 

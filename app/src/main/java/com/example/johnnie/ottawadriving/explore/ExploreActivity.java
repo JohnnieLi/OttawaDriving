@@ -68,10 +68,10 @@ public class ExploreActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 
-
+        //create the page view
         mViewPager = (ViewPager)findViewById(R.id.mainPager);
         if (mViewPager!=null){
-            mViewPager.setAdapter(new MyFragmentPagerAdapter(getSupportFragmentManager(),dbHelper));
+            mViewPager.setAdapter(new MyFragmentPagerAdapter(getSupportFragmentManager()));
         }
 
 
@@ -91,6 +91,7 @@ public class ExploreActivity extends AppCompatActivity
 
     }
 
+    //read values form xml file with PersonPullParser
     private void createData() {
         PersonPullParser parser = new PersonPullParser();
         List<PersonModel> people = parser.parseXML(this);
@@ -101,7 +102,7 @@ public class ExploreActivity extends AppCompatActivity
     }
 
 
-    // ======== back tab======
+    // ======== back tab ======
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -166,7 +167,6 @@ public class ExploreActivity extends AppCompatActivity
     }
 
 
-    // =========search data by name
 
 
 
@@ -183,29 +183,10 @@ public class ExploreActivity extends AppCompatActivity
 
 
     /*
-    *    Here to do database query and pass the result of type ArrayList<PersonModel>
-    *     as the parameter 'models' to fragment.displayListView();
-    *
+    *   so far never use this fragment interface, most fragment transition events has handled within PagerAdapter.
      */
     @Override
     public void OnListFragmentSelected(MyListFragment fragment,String title) {
-        mFragment = fragment;
-        new AsyncTask<String, Void, ArrayList<PersonModel>>() {
-
-            @Override
-            protected ArrayList<PersonModel> doInBackground(String... name) {
-                return dbHelper.fetchPersonByName(name[0]);
-
-            }
-            @Override
-            public void onPostExecute(ArrayList<PersonModel> models) {
-                mModels = models;
-                mFragment.displayListView(mModels);
-            }
-        }.execute(title);
-
-
-
 
     }
 }

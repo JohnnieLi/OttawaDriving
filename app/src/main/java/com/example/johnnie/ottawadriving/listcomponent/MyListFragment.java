@@ -44,7 +44,7 @@ public class MyListFragment extends Fragment {
 
 
 
-
+    // so far never used this
     public interface OnListFragmentSelected {
         void OnListFragmentSelected(MyListFragment fragment, String title);
     }
@@ -52,12 +52,12 @@ public class MyListFragment extends Fragment {
 
 
     /**
-     * Create a new instance of CountingFragment, providing "num"
+     * Create a new instance of MyListFragment, providing "title"
      * as an argument.
      */
     public static MyListFragment newInstance(String title) {
         MyListFragment f = new MyListFragment();
-        // Supply num input as an argument.
+        // Supply title input as an argument.
         Bundle args = new Bundle();
         args.putString("title",title);
         f.setArguments(args);
@@ -72,6 +72,7 @@ public class MyListFragment extends Fragment {
 
     }
 
+    //initialize the dataAdapter and open it.
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,10 +88,11 @@ public class MyListFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        // to set models to displayListView();
+
 
     }
 
+    // dataAdapter search some value as the models, put these models into recyclerList View
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -116,6 +118,7 @@ public class MyListFragment extends Fragment {
             @Override
             public void onPostExecute(ArrayList<PersonModel> models) {
                 mModels = models;
+                //create recyclerView and recyclerListAdapter
                 displayListView(mModels);
             }
         }.execute(mTitle);
@@ -151,6 +154,7 @@ public class MyListFragment extends Fragment {
     }
 
 
+    //create the recyclerView and recyclerListAdapter
     public void displayListView(final ArrayList<PersonModel> models) {
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView_items);
         mRecyclerView.setHasFixedSize(true);
