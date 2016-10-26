@@ -1,40 +1,39 @@
 package com.example.johnnie.ottawadriving.listcomponent;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.example.johnnie.ottawadriving.R;
 import com.example.johnnie.ottawadriving.localdatabase.PersonDbAdapter;
 import com.example.johnnie.ottawadriving.mapcomponent.MapActivity;
 import com.example.johnnie.ottawadriving.model.PersonModel;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
-
 
 /**
- * Created by Johnnie on 2016-09-14.
+ * A simple {@link Fragment} subclass.
+ * Activities that contain this fragment must implement the
+ * {@link TrainingCourseFragment.OnTrainingFragmentInteractionListener} interface
+ * to handle interaction events.
  */
-public class MyListFragment extends Fragment {
+public class TrainingCourseFragment extends Fragment {
 
+    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     final static String ARG_POSITION = "position";
     int mCurrentPosition = -1;
     private View rootView;
     private String mTitle;
-    private OnListFragmentSelected mCallbacks;
+    private OnTrainingFragmentInteractionListener mListener;
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -43,60 +42,39 @@ public class MyListFragment extends Fragment {
     private PersonDbAdapter mDbHelper;
 
 
-
-    // so far never used this
-    public interface OnListFragmentSelected {
-        void OnListFragmentSelected(MyListFragment fragment, String title);
+    public TrainingCourseFragment() {
+        // Required empty public constructor
     }
-
-
 
     /**
-     * Create a new instance of MyListFragment, providing "title"
-     * as an argument.
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
+     *
+     * @param title Parameter 1.
+     * @return A new instance of fragment LicenseTranFragment.
      */
-    public static MyListFragment newInstance(String title) {
-        MyListFragment f = new MyListFragment();
-        // Supply title input as an argument.
+    public static TrainingCourseFragment newInstance(String title) {
+        TrainingCourseFragment fragment = new TrainingCourseFragment();
         Bundle args = new Bundle();
         args.putString("title",title);
-        f.setArguments(args);
-        return f;
+        fragment.setArguments(args);
+        return fragment;
     }
 
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-
-    }
-
-    //initialize the dataAdapter and open it.
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Bundle args = getArguments();
-        mTitle = args.getString("title");
+        if (getArguments() != null) {
+            Bundle args = getArguments();
+            mTitle = args.getString("title");
+        }
         mDbHelper = new PersonDbAdapter(getActivity());
         mDbHelper.open();
-
-        }
-
-
-    // called after rootView created
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-
     }
 
-    // dataAdapter search some value as the models, put these models into recyclerList View
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         // If activity recreated (such as from screen rotate), restore
         // the previous article selection set by onSaveInstanceState().
         // This is primarily necessary when in the two-pane layout.
@@ -105,7 +83,7 @@ public class MyListFragment extends Fragment {
         }
 
         // Inflate the layout for this fragment
-        rootView = inflater.inflate(R.layout.list_frag, container, false);
+        rootView = inflater.inflate(R.layout.fragment_trainingcourse_page, container, false);
         mapViewButton = (Button) rootView.findViewById(R.id.list_map_button);
         mapViewButton.setClickable(false);
         new AsyncTask<String, Void, ArrayList<PersonModel>>() {
@@ -128,31 +106,24 @@ public class MyListFragment extends Fragment {
     }
 
 
+
+
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-
-
-        // This makes sure that the container activity has implemented
-        // the callback interface. If not, it throws an exception.
-        try {
-            mCallbacks = (OnListFragmentSelected) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnHeadlineSelectedListener");
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnTrainingFragmentInteractionListener) {
+            mListener = (OnTrainingFragmentInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
         }
-
-
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        // Save the current article selection in case we need to recreate the fragment
-        outState.putInt(ARG_POSITION, mCurrentPosition);
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
     }
-
 
     //create the recyclerView and recyclerListAdapter
     public void displayListView(final ArrayList<PersonModel> models) {
@@ -174,4 +145,25 @@ public class MyListFragment extends Fragment {
         });
     }
 
+
+    //    public void onButtonPressed(Uri uri) {
+//        if (mListener != null) {
+//            mListener.onFragmentInteraction(uri);
+//        }
+//    }
+
+
+    /**
+     * This interface must be implemented by activities that contain this
+     * fragment to allow an interaction in this fragment to be communicated
+     * to the activity and potentially other fragments contained in that
+     * activity.
+     * <p/>
+     * See the Android Training lesson <a href=
+     * "http://developer.android.com/training/basics/fragments/communicating.html"
+     * >Communicating with Other Fragments</a> for more information.
+     */
+    public interface OnTrainingFragmentInteractionListener {
+        void onTrainingFragmentInteraction(Uri uri);
+    }
 }

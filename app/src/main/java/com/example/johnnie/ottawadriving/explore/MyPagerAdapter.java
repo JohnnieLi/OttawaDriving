@@ -1,7 +1,6 @@
 package com.example.johnnie.ottawadriving.explore;
 
 import android.content.Context;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -10,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.johnnie.ottawadriving.R;
-import com.example.johnnie.ottawadriving.listcomponent.MyListFragment;
 
 /**
  * Created by Johnnie on 2016-09-15.

@@ -4,19 +4,17 @@ package com.example.johnnie.ottawadriving.explore;
 
 import android.content.Context;
 
-import android.os.AsyncTask;
+import android.content.res.Resources;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.util.Log;
-import android.widget.Toast;
 
-import com.example.johnnie.ottawadriving.listcomponent.MyListFragment;
-import com.example.johnnie.ottawadriving.localdatabase.PersonDbAdapter;
-import com.example.johnnie.ottawadriving.model.PersonModel;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.example.johnnie.ottawadriving.R;
+import com.example.johnnie.ottawadriving.listcomponent.InsuranceFragment;
+import com.example.johnnie.ottawadriving.listcomponent.LawyerFragment;
+import com.example.johnnie.ottawadriving.listcomponent.LicenseTranFragment;
+import com.example.johnnie.ottawadriving.listcomponent.DealerFragment;
+import com.example.johnnie.ottawadriving.listcomponent.TrainingCourseFragment;
 
 
 /**
@@ -25,15 +23,17 @@ import java.util.List;
 public class MyFragmentPagerAdapter extends FragmentPagerAdapter {
 
 
-    private MyListFragment mMyListFragment;
-    final int PAGE_COUNT = 3;
+     private Fragment mMyListFragment;
+    final int PAGE_COUNT = 5;
     // Tab Titles
-    private String tabtitles[] = new String[] { "bmw","audi","mercedes" };
+    private String[] tabtitles;
+    Resources res;
 
 
-    public MyFragmentPagerAdapter(FragmentManager fm) {
+    public MyFragmentPagerAdapter(FragmentManager fm, Context context) {
         super(fm);
-
+        res = context.getResources();
+        tabtitles = res.getStringArray(R.array.mainPageTitles);
     }
 
     @Override
@@ -47,19 +47,24 @@ public class MyFragmentPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         switch (position){
-            case 0:
-                mMyListFragment =  MyListFragment.newInstance("bmw");
+            case 0: //License
+                mMyListFragment =  LicenseTranFragment.newInstance("bmw");
                 break;
-            case 1:
-                mMyListFragment =  MyListFragment.newInstance("audi");
-
+            case 1: // Training
+                mMyListFragment =  TrainingCourseFragment.newInstance("audi");
                 break;
-            case 2:
-                mMyListFragment =  MyListFragment.newInstance("mercedes");
+            case 2: //Dealer
+                mMyListFragment =  DealerFragment.newInstance("bmw");
+                break;
 
+            case 3: //Insurance
+                mMyListFragment =  InsuranceFragment.newInstance("mercedes");
+                break;
+            case 4://Lawyer
+                mMyListFragment =  LawyerFragment.newInstance("audi");
                 break;
             default:
-                mMyListFragment =  MyListFragment.newInstance("bmw");
+                mMyListFragment =  DealerFragment.newInstance("bmw");
 
         }
         return mMyListFragment;

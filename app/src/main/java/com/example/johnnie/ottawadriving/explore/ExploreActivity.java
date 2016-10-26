@@ -2,8 +2,10 @@ package com.example.johnnie.ottawadriving.explore;
 
 
 
+import android.content.Intent;
 import android.content.res.Configuration;
-import android.os.AsyncTask;
+import android.content.res.Resources;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -12,29 +14,37 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.example.johnnie.ottawadriving.R;
-import com.example.johnnie.ottawadriving.listcomponent.MyListFragment;
+import com.example.johnnie.ottawadriving.listcomponent.InsuranceFragment;
+import com.example.johnnie.ottawadriving.listcomponent.LawyerFragment;
+import com.example.johnnie.ottawadriving.listcomponent.LicenseTranFragment;
+import com.example.johnnie.ottawadriving.listcomponent.DealerFragment;
+import com.example.johnnie.ottawadriving.listcomponent.TrainingCourseFragment;
 import com.example.johnnie.ottawadriving.localdatabase.PersonDbAdapter;
 import com.example.johnnie.ottawadriving.model.PersonModel;
 import com.example.johnnie.ottawadriving.utils.PersonPullParser;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class ExploreActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-        MyListFragment.OnListFragmentSelected{
+        DealerFragment.OnDealerFragmentInteractionListener,
+        LicenseTranFragment.OnFragmentInteractionListener,
+        TrainingCourseFragment.OnTrainingFragmentInteractionListener,
+        InsuranceFragment.OnInsuranceFragmentInteractionListener,
+        LawyerFragment.OnLawyerFragmentInteractionListener{
 
     private PersonDbAdapter dbHelper;
     ViewPager mViewPager;
     private ArrayList<PersonModel> mModels;
-    private MyListFragment mFragment;
+    private DealerFragment mFragment;
+    Locale myLocale;
 
 
     @Override
@@ -71,7 +81,7 @@ public class ExploreActivity extends AppCompatActivity
         //create the page view
         mViewPager = (ViewPager)findViewById(R.id.mainPager);
         if (mViewPager!=null){
-            mViewPager.setAdapter(new MyFragmentPagerAdapter(getSupportFragmentManager()));
+            mViewPager.setAdapter(new MyFragmentPagerAdapter(getSupportFragmentManager(),this));
         }
 
 
@@ -130,14 +140,32 @@ public class ExploreActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch(id){
+            case R.id.action_settings:
+                break;
+            case R.id.action_english:
+                setLocale("en");
+                break;
+            case R.id.action_chinese:
+                setLocale("zh");
+                break;
+            default:
+                break;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
+    public void setLocale(String lang) {
+        myLocale = new Locale(lang);
+        Resources res = getResources();
+        DisplayMetrics dm = res.getDisplayMetrics();
+        Configuration conf = res.getConfiguration();
+        conf.locale = myLocale;
+        res.updateConfiguration(conf, dm);
+        Intent refresh = new Intent(this, ExploreActivity.class);
+        startActivity(refresh);
+    }
 
 
     // =========================NavigationItem=======================
@@ -181,12 +209,49 @@ public class ExploreActivity extends AppCompatActivity
     }
 
 
-
+// ======================Fragment Interfaces=======================================
     /*
+    *   From DealerFragment
     *   so far never use this fragment interface, most fragment transition events has handled within PagerAdapter.
      */
     @Override
-    public void OnListFragmentSelected(MyListFragment fragment,String title) {
+    public void OnDealerFragmentInteraction(DealerFragment fragment, String title) {
 
     }
+
+    /*
+       *   From LicenseTranFragment
+       *   so far never use this fragment interface, most fragment transition events has handled within PagerAdapter.
+        */
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
+    }
+
+           /*
+           *   From TrainingCourseFragment
+           *   so far never use this fragment interface, most fragment transition events has handled within PagerAdapter.
+            */
+    @Override
+    public void onTrainingFragmentInteraction(Uri uri) {
+
+    }
+    /*
+               *   From InsuranceFragment
+               *   so far never use this fragment interface, most fragment transition events has handled within PagerAdapter.
+                */
+    @Override
+    public void onInsuranceFragmentInteraction(Uri uri) {
+
+    }
+    /*
+               *   From LawyerFragment
+               *   so far never use this fragment interface, most fragment transition events has handled within PagerAdapter.
+                */
+    @Override
+    public void onLawyerFragmentInteraction(Uri uri) {
+
+    }
+
+    // ======================Fragment Interfaces  End=======================================
 }

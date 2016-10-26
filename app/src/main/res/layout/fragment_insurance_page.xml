@@ -3,19 +3,18 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/list_frag">
+    >
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/list_map_button"
-        android:text="Map View"/>
+        android:text="@string/map_button"/>
 
-              <android.support.v7.widget.RecyclerView
-                   android:id="@+id/recyclerView_items"
-                   android:layout_width="match_parent"
-                   android:layout_height="match_parent">
-
-               </android.support.v7.widget.RecyclerView>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView_items"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </android.support.v7.widget.RecyclerView>
 
 </LinearLayout>
