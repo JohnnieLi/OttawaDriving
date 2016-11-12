@@ -47,7 +47,7 @@ public class DetailActivity extends AppCompatActivity {
         setToolbarChange();
 
         imageView = (ImageView)findViewById(R.id.detail_image_view);
-        textView = (TextView)findViewById(R.id.detail_text_address);
+//        textView = (TextView)findViewById(R.id.detail_text_address);
 
 
 
@@ -63,7 +63,7 @@ public class DetailActivity extends AppCompatActivity {
         if (getIntent().hasExtra("model")) {
             PersonModel model = (PersonModel) getIntent().getExtras().getSerializable("model");
             String address = model.getAddress();
-            textView.setText(address);
+            //textView.setText(address);
         } else {
             throw new IllegalArgumentException("Activity cannot find  extras " + "model");
         }
