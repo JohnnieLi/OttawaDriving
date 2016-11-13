@@ -3,10 +3,7 @@ package com.example.johnnie.ottawadriving.detailactivity;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.NestedScrollView;
@@ -14,26 +11,22 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.johnnie.ottawadriving.R;
 import com.example.johnnie.ottawadriving.model.PersonModel;
-import com.google.android.gms.ads.formats.NativeAd;
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.common.api.GoogleApiClient;
+
 
 public class DetailActivity extends AppCompatActivity {
 
     Toolbar toolbar;
     ActionBar mActionBar;
     ImageView imageView;
-    TextView textView;
+    TextView addressTextView;
+    TextView phoneTextView;
+    TextView emailTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,11 +36,27 @@ public class DetailActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
         // set toolbar change with scroll view
-        setToolbarChange();
+       // setToolbarChange();
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
+
 
         imageView = (ImageView)findViewById(R.id.detail_image_view);
-//        textView = (TextView)findViewById(R.id.detail_text_address);
+        addressTextView = (TextView)findViewById(R.id.detail_address);
+        phoneTextView = (TextView)findViewById(R.id.detail_phoneNumber);
+        emailTextView = (TextView)findViewById(R.id.detail_email);
 
 
 
@@ -63,7 +72,10 @@ public class DetailActivity extends AppCompatActivity {
         if (getIntent().hasExtra("model")) {
             PersonModel model = (PersonModel) getIntent().getExtras().getSerializable("model");
             String address = model.getAddress();
-            //textView.setText(address);
+            addressTextView.setText(address);
+            phoneTextView.setText(model.getPhoneNumber());
+            emailTextView.setText(model.getEmail());
+            this.setTitle(model.getName());
         } else {
             throw new IllegalArgumentException("Activity cannot find  extras " + "model");
         }

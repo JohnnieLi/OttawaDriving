@@ -4,7 +4,7 @@
     <!--   ++++++++++bmw dealers+++++++++++++  -->
     <person>
         <address> 835 Carling Ave,Ottawa </address>
-        <email>dealer</email>
+        <email>dealer@test.com</email>
         <name>bmw</name>
         <information>Otto's BMW</information>
         <phone>844-267-4826</phone>
@@ -14,7 +14,7 @@
 
     <person>
         <address> 1040 Ogilvie Rd, Gloucester, ON K1J 7T3 </address>
-        <email>dealer</email>
+        <email>dealer@test.com</email>
         <name>bmw</name>
         <information>Elite BMW</information>
         <phone>844-267-4826</phone>
@@ -26,7 +26,7 @@
     <!-- +++++++++++Audi Dealers++++++++++++++++++++ -->
     <person>
         <address> 295 West Hunt Club Rd,Ottawa </address>
-        <email>dealer</email>
+        <email>dealer@test.com</email>
         <name>audi</name>
         <information>Mark Motors of Ottawa</information>
         <phone>(613) 723-1221</phone>
@@ -35,7 +35,7 @@
 
     <person>
         <address> 458 Montreal Rd, Ottawa </address>
-        <email>dealer</email>
+        <email>dealer@test.com</email>
         <name>audi</name>
         <information>Mark Motors of Ottawa</information>
         <phone>(613) 746-3533</phone>
@@ -45,7 +45,7 @@
 
     <person>
     <address> 611 Montreal Rd, Ottawa </address>
-    <email>dealer</email>
+    <email>dealer@test.com</email>
     <name>audi</name>
     <information>Mark Motors of Ottawa</information>
     <phone>(613) 749-4275</phone>
@@ -56,7 +56,7 @@
     <!-- +++++++++++++++Mercedes dealers++++++++++++++++++++ -->
     <person>
         <address> 400 Hunt Club Rd, ottawa </address>
-        <email>dealer</email>
+        <email>dealer@test.com</email>
         <name>mercedes</name>
         <information>Star Motors of Ottawa</information>
         <phone>(613) 737-7827</phone>
@@ -66,7 +66,7 @@
 
     <person>
         <address> 1339 Boulevard la Vérendrye O, Gatineau, QC J8T 8K2 </address>
-        <email>dealer</email>
+        <email>dealer@test.com</email>
         <name>mercedes</name>
         <information>Mercedes-Benz Gatineau</information>
         <phone>(613) 745-9000</phone>

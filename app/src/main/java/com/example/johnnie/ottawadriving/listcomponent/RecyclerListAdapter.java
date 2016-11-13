@@ -48,6 +48,7 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
         public TextView address;
         public TextView phone;
         public PersonModel model;
+        public TextView email;
 
         public ViewHolder(View v, final Context context) {
             super(v);
@@ -55,6 +56,7 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
             img = (ImageView)v.findViewById(R.id.card_img);
             address =  (TextView)v.findViewById(R.id.card_address);
             phone = (TextView)v.findViewById(R.id.card_phone);
+            email = (TextView)v.findViewById(R.id.card_Email);
 
 
             v.setOnClickListener(new View.OnClickListener() {
@@ -125,6 +127,8 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
         holder.info.setText(currentModel.getInformation());
         holder.address.setText(currentModel.getAddress());
         holder.phone.setText(currentModel.getPhoneNumber());
+        holder.email.setText(currentModel.getEmail());
+
 
         new AsyncTask<String, Integer, Bitmap>(){
             @Override

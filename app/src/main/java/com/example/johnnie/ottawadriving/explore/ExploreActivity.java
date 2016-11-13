@@ -94,6 +94,7 @@ public class ExploreActivity extends AppCompatActivity
         dbHelper = new PersonDbAdapter(this);
         dbHelper.open();
         List<PersonModel> models = dbHelper.fetchAllPeople();
+        //dbHelper.deleteAllDealers();
         if (models.size() == 0) {
             createData();
             dbHelper.close();
