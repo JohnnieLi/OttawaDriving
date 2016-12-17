@@ -10,11 +10,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.example.johnnie.ottawadriving.R;
-import com.example.johnnie.ottawadriving.listcomponent.InsuranceFragment;
-import com.example.johnnie.ottawadriving.listcomponent.LawyerFragment;
-import com.example.johnnie.ottawadriving.listcomponent.LicenseTranFragment;
-import com.example.johnnie.ottawadriving.listcomponent.DealerFragment;
-import com.example.johnnie.ottawadriving.listcomponent.TrainingCourseFragment;
+import com.example.johnnie.ottawadriving.listcomponent.CommonTemplateFragment;
 
 
 /**
@@ -48,23 +44,28 @@ public class MyFragmentPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position){
             case 0: //License
-                mMyListFragment =  LicenseTranFragment.newInstance("bmw");
+                mMyListFragment =  CommonTemplateFragment.newInstance("license");
                 break;
             case 1: // Training
-                mMyListFragment =  TrainingCourseFragment.newInstance("audi");
+                mMyListFragment =  CommonTemplateFragment.newInstance("course");
+               // mMyListFragment =  TrainingCourseFragment.newInstance("course");
                 break;
             case 2: //Dealer
-                mMyListFragment =  DealerFragment.newInstance("bmw");
+                mMyListFragment =  CommonTemplateFragment.newInstance("dealer");
+                //mMyListFragment =  DealerFragment.newInstance("dealer");
                 break;
 
             case 3: //Insurance
-                mMyListFragment =  InsuranceFragment.newInstance("mercedes");
+                mMyListFragment =  CommonTemplateFragment.newInstance("insurance");
+                //mMyListFragment =  InsuranceFragment.newInstance("insurance");
                 break;
             case 4://Lawyer
-                mMyListFragment =  LawyerFragment.newInstance("audi");
+                mMyListFragment =  CommonTemplateFragment.newInstance("lawyer");
+                //mMyListFragment =  LawyerFragment.newInstance("lawyer");
                 break;
             default:
-                mMyListFragment =  DealerFragment.newInstance("bmw");
+                mMyListFragment =  CommonTemplateFragment.newInstance("license");
+               // mMyListFragment =  DealerFragment.newInstance("license");
 
         }
         return mMyListFragment;

@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
+import android.support.v4.util.LruCache;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,6 +17,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.johnnie.ottawadriving.R;
 import com.example.johnnie.ottawadriving.detailactivity.DetailActivity;
 import com.example.johnnie.ottawadriving.explore.ExploreActivity;
@@ -37,6 +43,9 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
     private ArrayList<PersonModel> models;
     private Context mContext;
     private PersonModel currentModel;
+
+    private LruCache<Integer, Bitmap> imageCache;
+    private RequestQueue queue;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -101,6 +110,13 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
     public RecyclerListAdapter(ArrayList<PersonModel> models, Context context) {
         this.models = models;
         this.mContext = context;
+
+        final int maxMemory = (int)(Runtime.getRuntime().maxMemory()/1024);
+        final int cacheSize = maxMemory / 8;
+        imageCache = new LruCache<>(cacheSize);
+
+
+        queue = Volley.newRequestQueue(context);
     }
 
     @Override
@@ -124,48 +140,73 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
 
         currentModel = models.get(position);
         holder.setModel(currentModel);
-        holder.info.setText(currentModel.getInformation());
+        holder.info.setText(currentModel.getName());
         holder.address.setText(currentModel.getAddress());
         holder.phone.setText(currentModel.getPhoneNumber());
         holder.email.setText(currentModel.getEmail());
 
 
-        new AsyncTask<String, Integer, Bitmap>(){
-            @Override
-            protected void onPreExecute(){
-                //do setup here
-            }
-            @Override
-            protected Bitmap doInBackground(String... params){
-                try {
-                    URL url = new URL(params[0]);
-                    Log.d("RECYCLE", "URL: "+url.toString());
-                    HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
-                    if (httpCon.getResponseCode() != 200) {
-                        throw new Exception("Failed to connect");
-                    }
-                    InputStream is = httpCon.getInputStream();
-                    return BitmapFactory.decodeStream(is);
-                }catch(Exception e){
-                    Log.e("Image", "Failed to load image", e);
-                }
-                return null;
-            }
-            @Override
-            protected void onProgressUpdate(Integer... params){
-                //Update a progress bar
-            }
-            @Override
-            protected void onPostExecute(Bitmap img){
-                if (holder.img != null && img != null){
-                    holder.img.setImageBitmap(img);
-                }
-            }
-            @Override
-            protected void onCancelled(){
-                // Handle case where you called cancel
-            }
-        }.execute(currentModel.getImageUri());
+        Bitmap bitmap = imageCache.get((int)currentModel.getId());
+        if (bitmap != null){
+            holder.img.setImageBitmap(bitmap);
+        }else {
+            ImageRequest request = new ImageRequest(currentModel.getImageUri(),
+                    new Response.Listener<Bitmap>() {
+
+                        @Override
+                        public void onResponse(Bitmap response) {
+                            holder.img.setImageBitmap(response);
+                            imageCache.put((int)currentModel.getId(),response);
+                        }
+                    },
+                    holder.img.getWidth(), holder.img.getHeight(),
+                    Bitmap.Config.ARGB_8888,
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.d("RecyclerListAdapter", error.getMessage());
+                        }
+                    });
+            queue.add(request);
+
+        }
+
+//        new AsyncTask<String, Integer, Bitmap>(){
+//            @Override
+//            protected void onPreExecute(){
+//                //do setup here
+//            }
+//            @Override
+//            protected Bitmap doInBackground(String... params){
+//                try {
+//                    URL url = new URL(params[0]);
+//                    Log.d("RECYCLE", "URL: "+url.toString());
+//                    HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
+//                    if (httpCon.getResponseCode() != 200) {
+//                        throw new Exception("Failed to connect");
+//                    }
+//                    InputStream is = httpCon.getInputStream();
+//                    return BitmapFactory.decodeStream(is);
+//                }catch(Exception e){
+//                    Log.e("Image", "Failed to load image", e);
+//                }
+//                return null;
+//            }
+//            @Override
+//            protected void onProgressUpdate(Integer... params){
+//                //Update a progress bar
+//            }
+//            @Override
+//            protected void onPostExecute(Bitmap img){
+//                if (holder.img != null && img != null){
+//                    holder.img.setImageBitmap(img);
+//                }
+//            }
+//            @Override
+//            protected void onCancelled(){
+//                // Handle case where you called cancel
+//            }
+//        }.execute(currentModel.getImageUri());
 
 
 

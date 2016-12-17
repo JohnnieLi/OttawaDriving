@@ -19,26 +19,21 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.johnnie.ottawadriving.R;
-import com.example.johnnie.ottawadriving.listcomponent.InsuranceFragment;
-import com.example.johnnie.ottawadriving.listcomponent.LawyerFragment;
-import com.example.johnnie.ottawadriving.listcomponent.LicenseTranFragment;
+import com.example.johnnie.ottawadriving.listcomponent.CommonTemplateFragment;
 import com.example.johnnie.ottawadriving.listcomponent.DealerFragment;
-import com.example.johnnie.ottawadriving.listcomponent.TrainingCourseFragment;
 import com.example.johnnie.ottawadriving.localdatabase.PersonDbAdapter;
 import com.example.johnnie.ottawadriving.model.PersonModel;
-import com.example.johnnie.ottawadriving.utils.PersonPullParser;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
 public class ExploreActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-        DealerFragment.OnDealerFragmentInteractionListener,
-        LicenseTranFragment.OnFragmentInteractionListener,
-        TrainingCourseFragment.OnTrainingFragmentInteractionListener,
-        InsuranceFragment.OnInsuranceFragmentInteractionListener,
-        LawyerFragment.OnLawyerFragmentInteractionListener{
+        //DealerFragment.OnDealerFragmentInteractionListener,
+        CommonTemplateFragment.OnFragmentInteractionListener{
+       // TrainingCourseFragment.OnTrainingFragmentInteractionListener,
+       // InsuranceFragment.OnInsuranceFragmentInteractionListener,
+       // LawyerFragment.OnLawyerFragmentInteractionListener{
 
     private PersonDbAdapter dbHelper;
     ViewPager mViewPager;
@@ -65,7 +60,7 @@ public class ExploreActivity extends AppCompatActivity
 //        });
 
         //create sample database
-        setLocalData();
+       // setLocalData();
 
         // drawer and navigation view
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -88,6 +83,7 @@ public class ExploreActivity extends AppCompatActivity
 
 
     }
+     /*  unable local database
 
     //initialize database and load data
     public void setLocalData() {
@@ -111,7 +107,7 @@ public class ExploreActivity extends AppCompatActivity
         }
 
     }
-
+     */
 
     // ======== back tab ======
     @Override
@@ -157,6 +153,7 @@ public class ExploreActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+    //change language
     public void setLocale(String lang) {
         myLocale = new Locale(lang);
         Resources res = getResources();
@@ -211,17 +208,9 @@ public class ExploreActivity extends AppCompatActivity
 
 
 // ======================Fragment Interfaces=======================================
-    /*
-    *   From DealerFragment
-    *   so far never use this fragment interface, most fragment transition events has handled within PagerAdapter.
-     */
-    @Override
-    public void OnDealerFragmentInteraction(DealerFragment fragment, String title) {
-
-    }
 
     /*
-       *   From LicenseTranFragment
+       *   From CommonTemplateFragment
        *   so far never use this fragment interface, most fragment transition events has handled within PagerAdapter.
         */
     @Override
@@ -229,30 +218,7 @@ public class ExploreActivity extends AppCompatActivity
 
     }
 
-           /*
-           *   From TrainingCourseFragment
-           *   so far never use this fragment interface, most fragment transition events has handled within PagerAdapter.
-            */
-    @Override
-    public void onTrainingFragmentInteraction(Uri uri) {
 
-    }
-    /*
-               *   From InsuranceFragment
-               *   so far never use this fragment interface, most fragment transition events has handled within PagerAdapter.
-                */
-    @Override
-    public void onInsuranceFragmentInteraction(Uri uri) {
-
-    }
-    /*
-               *   From LawyerFragment
-               *   so far never use this fragment interface, most fragment transition events has handled within PagerAdapter.
-                */
-    @Override
-    public void onLawyerFragmentInteraction(Uri uri) {
-
-    }
 
     // ======================Fragment Interfaces  End=======================================
 }
