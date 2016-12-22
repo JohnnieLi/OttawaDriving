@@ -1,4 +1,4 @@
-package com.example.johnnie.ottawadriving.listcomponent;
+package com.example.johnnie.ottawadriving.listpagecomponent;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -38,13 +38,12 @@ public class DealerFragment extends Fragment {
     private PersonDbAdapter mDbHelper;
 
 
-
     // so far never used this
     public interface OnDealerFragmentInteractionListener {
         void OnDealerFragmentInteraction(DealerFragment fragment, String title);
     }
 
-    public DealerFragment(){
+    public DealerFragment() {
 
     }
 
@@ -56,7 +55,7 @@ public class DealerFragment extends Fragment {
         DealerFragment f = new DealerFragment();
         // Supply title input as an argument.
         Bundle args = new Bundle();
-        args.putString("title",title);
+        args.putString("title", title);
         f.setArguments(args);
         return f;
     }
@@ -79,7 +78,7 @@ public class DealerFragment extends Fragment {
         }
         mDbHelper = new PersonDbAdapter(getActivity());
         mDbHelper.open();
-        }
+    }
 
 
     // called after rootView created
@@ -112,6 +111,7 @@ public class DealerFragment extends Fragment {
                 return mDbHelper.fetchPersonByName(name[0]);
 
             }
+
             @Override
             public void onPostExecute(ArrayList<PersonModel> models) {
                 mModels = models;
@@ -157,7 +157,7 @@ public class DealerFragment extends Fragment {
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new RecyclerListAdapter(models,getContext());
+        mAdapter = new RecyclerListAdapter(models, getContext());
         mRecyclerView.setAdapter(mAdapter);
 
         mapViewButton.setClickable(true);
@@ -165,7 +165,7 @@ public class DealerFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), MapActivity.class);
-                intent.putExtra("PersonModels",models);
+                intent.putExtra("PersonModels", models);
                 startActivity(intent);
             }
         });

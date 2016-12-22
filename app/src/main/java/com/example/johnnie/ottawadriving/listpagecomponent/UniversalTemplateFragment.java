@@ -1,7 +1,8 @@
-package com.example.johnnie.ottawadriving.listcomponent;
+package com.example.johnnie.ottawadriving.listpagecomponent;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -11,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,12 +38,12 @@ import java.util.ArrayList;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link CommonTemplateFragment.OnFragmentInteractionListener} interface
+ * {@link UniversalTemplateFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link CommonTemplateFragment#newInstance} factory method to
+ * Use the {@link UniversalTemplateFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CommonTemplateFragment extends Fragment {
+public class UniversalTemplateFragment extends Fragment {
 
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     final static String ARG_POSITION = "position";
@@ -57,7 +59,7 @@ public class CommonTemplateFragment extends Fragment {
     //private PersonDbAdapter mDbHelper;
 
 
-    public CommonTemplateFragment() {
+    public UniversalTemplateFragment() {
         // Required empty public constructor
     }
 
@@ -66,10 +68,10 @@ public class CommonTemplateFragment extends Fragment {
      * this fragment using the provided parameters.
      *
      * @param title Parameter 1.
-     * @return A new instance of fragment CommonTemplateFragment.
+     * @return A new instance of fragment UniversalTemplateFragment.
      */
-    public static CommonTemplateFragment newInstance(String title) {
-        CommonTemplateFragment fragment = new CommonTemplateFragment();
+    public static UniversalTemplateFragment newInstance(String title) {
+        UniversalTemplateFragment fragment = new UniversalTemplateFragment();
         Bundle args = new Bundle();
         args.putString("title", title);
         fragment.setArguments(args);
@@ -98,14 +100,14 @@ public class CommonTemplateFragment extends Fragment {
         }
 
         // Inflate the layout for this fragment
-        rootView = inflater.inflate(R.layout.fragment_licensetran_page, container, false);
+        rootView = inflater.inflate(R.layout.fragment_universaltemplate_page, container, false);
         mapViewButton = (Button) rootView.findViewById(R.id.license_map_button);
         mapViewButton.setClickable(false);
 
 
         if (isOnline()) {
-            String uri = "http://192.168.2.12:5000/api/businessMen?type="+mTitle;
-            Log.d("LicenseFragment",uri);
+            String uri = "http://192.168.2.12:5000/api/businessMen?type=" + mTitle;
+            Log.d("LicenseFragment", uri);
             requestData(uri);
         } else {
             Toast.makeText(getContext(), "Network isn't available", Toast.LENGTH_LONG).show();
@@ -135,7 +137,7 @@ public class CommonTemplateFragment extends Fragment {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        Log.d("LicenseFragmentModels",mModels.get(0).getName());
+                        Log.d("LicenseFragmentModels", mModels.get(0).getName());
                         displayListView(mModels);
                     }
 
@@ -180,9 +182,16 @@ public class CommonTemplateFragment extends Fragment {
     //create the recyclerView and recyclerListAdapter
     public void displayListView(final ArrayList<PersonModel> models) {
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView_items);
-        mRecyclerView.setHasFixedSize(true);
+        // mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
+
+        mRecyclerView.setClipToPadding(false);
+        Resources r = getResources();
+
+        mRecyclerView.setFitsSystemWindows(true);
+
+
         mAdapter = new RecyclerListAdapter(models, getContext());
         mRecyclerView.setAdapter(mAdapter);
 

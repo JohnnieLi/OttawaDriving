@@ -6,13 +6,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Toast;
 
 import com.example.johnnie.ottawadriving.R;
-import com.example.johnnie.ottawadriving.listcomponent.RecyclerListAdapter;
+import com.example.johnnie.ottawadriving.listpagecomponent.RecyclerListAdapter;
 import com.example.johnnie.ottawadriving.model.PersonModel;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 /**

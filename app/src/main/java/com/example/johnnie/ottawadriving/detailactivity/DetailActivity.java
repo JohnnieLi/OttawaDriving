@@ -15,6 +15,11 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.johnnie.ottawadriving.R;
 import com.example.johnnie.ottawadriving.model.PersonModel;
 
@@ -27,7 +32,7 @@ public class DetailActivity extends AppCompatActivity {
     TextView addressTextView;
     TextView phoneTextView;
     TextView emailTextView;
-
+    private RequestQueue queue;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,17 +62,12 @@ public class DetailActivity extends AppCompatActivity {
         addressTextView = (TextView)findViewById(R.id.detail_address);
         phoneTextView = (TextView)findViewById(R.id.detail_phoneNumber);
         emailTextView = (TextView)findViewById(R.id.detail_email);
-
+        queue = Volley.newRequestQueue(this.getApplicationContext());
 
 
        // get the image value and model from card view Onclick(Within recycListAdapter)
         // TODO: 2016-10-01  so far Just pass the whole model. later, should be discussed about pass the model or pass the id
         // TODO: 2016-10-01  if pass model, that means the whole data are readed after we search, if pass id, means read from database here
-        if (getIntent().hasExtra("imageResource")) {
-           imageView.setImageBitmap((Bitmap) getIntent().getExtras().get("imageResource"));
-        } else {
-            throw new IllegalArgumentException("Activity cannot find  extras " + "imageResource");
-        }
 
         if (getIntent().hasExtra("model")) {
             PersonModel model = (PersonModel) getIntent().getExtras().getSerializable("model");
@@ -76,6 +76,24 @@ public class DetailActivity extends AppCompatActivity {
             phoneTextView.setText(model.getPhoneNumber());
             emailTextView.setText(model.getEmail());
             this.setTitle(model.getName());
+            ImageRequest request = new ImageRequest(model.getImageUri(),
+                    new Response.Listener<Bitmap>() {
+
+                        @Override
+                        public void onResponse(Bitmap response) {
+                            imageView.setImageBitmap(response);
+
+                        }
+                    },
+                    imageView.getWidth(), imageView.getHeight(),
+                    Bitmap.Config.ARGB_8888,
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.d("RecyclerListAdapter", error.getMessage());
+                        }
+                    });
+            queue.add(request);
         } else {
             throw new IllegalArgumentException("Activity cannot find  extras " + "model");
         }

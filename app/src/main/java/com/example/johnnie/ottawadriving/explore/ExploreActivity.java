@@ -15,14 +15,19 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
 import com.example.johnnie.ottawadriving.R;
-import com.example.johnnie.ottawadriving.listcomponent.CommonTemplateFragment;
-import com.example.johnnie.ottawadriving.listcomponent.DealerFragment;
+import com.example.johnnie.ottawadriving.listpagecomponent.UniversalTemplateFragment;
+import com.example.johnnie.ottawadriving.listpagecomponent.DealerFragment;
 import com.example.johnnie.ottawadriving.localdatabase.PersonDbAdapter;
 import com.example.johnnie.ottawadriving.model.PersonModel;
+import com.example.johnnie.ottawadriving.userlogin.LogInPageActivity;
+import com.example.johnnie.ottawadriving.view.PagerSlidingTabStrip;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -30,13 +35,14 @@ import java.util.Locale;
 public class ExploreActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         //DealerFragment.OnDealerFragmentInteractionListener,
-        CommonTemplateFragment.OnFragmentInteractionListener{
+        UniversalTemplateFragment.OnFragmentInteractionListener {
        // TrainingCourseFragment.OnTrainingFragmentInteractionListener,
        // InsuranceFragment.OnInsuranceFragmentInteractionListener,
        // LawyerFragment.OnLawyerFragmentInteractionListener{
 
     private PersonDbAdapter dbHelper;
-    ViewPager mViewPager;
+    private ViewPager mViewPager;
+    private PagerSlidingTabStrip tabs;
     private ArrayList<PersonModel> mModels;
     private DealerFragment mFragment;
     Locale myLocale;
@@ -50,17 +56,7 @@ public class ExploreActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
 
-        //create sample database
-       // setLocalData();
 
         // drawer and navigation view
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -72,12 +68,28 @@ public class ExploreActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        //set login on clicked event
+        View headerLayout = navigationView.getHeaderView(0);
+        View loginPart = headerLayout.findViewById(R.id.login_part);
+        loginPart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ExploreActivity.this, LogInPageActivity.class);
+                startActivity(intent);
+            }
+        });
 
+
+        tabs = (PagerSlidingTabStrip) findViewById(R.id.activity_tab_universal_tabs);
         //create the page view
         mViewPager = (ViewPager)findViewById(R.id.mainPager);
+        final int pageMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources()
+                .getDisplayMetrics());
+        mViewPager.setPageMargin(pageMargin);
         if (mViewPager!=null){
             mViewPager.setAdapter(new MyFragmentPagerAdapter(getSupportFragmentManager(),this));
         }
+        tabs.setViewPager(mViewPager);
 
 
 
@@ -174,7 +186,7 @@ public class ExploreActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
-            // Handle the camera action
+
         } else if (id == R.id.nav_gallery) {
 
         } else if (id == R.id.nav_slideshow) {
@@ -210,7 +222,7 @@ public class ExploreActivity extends AppCompatActivity
 // ======================Fragment Interfaces=======================================
 
     /*
-       *   From CommonTemplateFragment
+       *   From UniversalTemplateFragment
        *   so far never use this fragment interface, most fragment transition events has handled within PagerAdapter.
         */
     @Override

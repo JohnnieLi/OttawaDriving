@@ -10,7 +10,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.example.johnnie.ottawadriving.R;
-import com.example.johnnie.ottawadriving.listcomponent.CommonTemplateFragment;
+import com.example.johnnie.ottawadriving.listpagecomponent.UniversalTemplateFragment;
 
 
 /**
@@ -44,27 +44,27 @@ public class MyFragmentPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position){
             case 0: //License
-                mMyListFragment =  CommonTemplateFragment.newInstance("license");
+                mMyListFragment = UniversalTemplateFragment.newInstance("license");
                 break;
             case 1: // Training
-                mMyListFragment =  CommonTemplateFragment.newInstance("course");
+                mMyListFragment = UniversalTemplateFragment.newInstance("course");
                // mMyListFragment =  TrainingCourseFragment.newInstance("course");
                 break;
             case 2: //Dealer
-                mMyListFragment =  CommonTemplateFragment.newInstance("dealer");
+                mMyListFragment = UniversalTemplateFragment.newInstance("dealer");
                 //mMyListFragment =  DealerFragment.newInstance("dealer");
                 break;
 
             case 3: //Insurance
-                mMyListFragment =  CommonTemplateFragment.newInstance("insurance");
+                mMyListFragment = UniversalTemplateFragment.newInstance("insurance");
                 //mMyListFragment =  InsuranceFragment.newInstance("insurance");
                 break;
             case 4://Lawyer
-                mMyListFragment =  CommonTemplateFragment.newInstance("lawyer");
+                mMyListFragment = UniversalTemplateFragment.newInstance("lawyer");
                 //mMyListFragment =  LawyerFragment.newInstance("lawyer");
                 break;
             default:
-                mMyListFragment =  CommonTemplateFragment.newInstance("license");
+                mMyListFragment = UniversalTemplateFragment.newInstance("license");
                // mMyListFragment =  DealerFragment.newInstance("license");
 
         }
