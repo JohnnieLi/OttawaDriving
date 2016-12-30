@@ -59,6 +59,12 @@
 
         </activity>
 
+        <activity
+            android:name=".userlogin.RegisterPageActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
+
     </application>
 
 </manifest>

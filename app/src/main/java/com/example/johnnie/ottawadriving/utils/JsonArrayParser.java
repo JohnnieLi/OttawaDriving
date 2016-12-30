@@ -3,6 +3,7 @@ package com.example.johnnie.ottawadriving.utils;
 import android.util.Log;
 
 import com.example.johnnie.ottawadriving.model.PersonModel;
+import com.example.johnnie.ottawadriving.model.UserModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,7 +23,6 @@ public class JsonArrayParser {
         // change getJSONFromUrl to return ArrayList<PersonModel>
         public static ArrayList<PersonModel> parsePersonModelFromJson(JSONArray jsonArray) {
             ArrayList<PersonModel> mModels = new ArrayList<PersonModel>();
-
             for (int i=0; i < jsonArray.length(); i++) {
 
                 JSONObject json_data = null;
@@ -43,5 +43,18 @@ public class JsonArrayParser {
                 }
 
             return mModels;
+        }
+
+    //used for user login
+    public static UserModel parseUserModel(JSONObject jsonObject) {
+        UserModel userModel = new UserModel();
+        try {
+            userModel.setFirstName(jsonObject.getString("firstName"));
+            userModel.setLastName(jsonObject.getString("lastName"));
+            userModel.setUsername(jsonObject.getString("username"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return userModel;
         }
 }

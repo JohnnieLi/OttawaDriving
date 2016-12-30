@@ -110,5 +110,7 @@
     <string name="login">LOGIN</string>
     <string name="register">REGISTER</string>
     <string name="skip">SKIP</string>
+    <string name="firstName">FirstName</string>
+    <string name="lastName">LastName</string>
 
 </resources>

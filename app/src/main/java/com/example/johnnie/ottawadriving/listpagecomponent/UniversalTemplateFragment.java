@@ -19,10 +19,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.johnnie.ottawadriving.R;
 import com.example.johnnie.ottawadriving.mapcomponent.MapActivity;
@@ -125,15 +127,15 @@ public class UniversalTemplateFragment extends Fragment {
 
     private void requestData(String uri) {
 
-        JsonArrayRequest request = new JsonArrayRequest(uri,
+        JsonObjectRequest request = new JsonObjectRequest(uri, null,
 
-                new Response.Listener<JSONArray>() {
+                new Response.Listener<JSONObject>() {
 
                     @Override
-                    public void onResponse(JSONArray response) {
-                        mModels = JsonArrayParser.parsePersonModelFromJson(response);
+                    public void onResponse(JSONObject response) {
+
                         try {
-                            JSONObject obj = response.getJSONObject(0);
+                            mModels = JsonArrayParser.parsePersonModelFromJson(response.getJSONArray("businessMen"));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

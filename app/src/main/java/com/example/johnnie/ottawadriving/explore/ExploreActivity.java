@@ -1,8 +1,11 @@
 package com.example.johnnie.ottawadriving.explore;
 
 
-
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.net.Uri;
@@ -15,12 +18,12 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
-
+import android.widget.TextView;
 import com.example.johnnie.ottawadriving.R;
 import com.example.johnnie.ottawadriving.listpagecomponent.UniversalTemplateFragment;
 import com.example.johnnie.ottawadriving.listpagecomponent.DealerFragment;
@@ -28,7 +31,6 @@ import com.example.johnnie.ottawadriving.localdatabase.PersonDbAdapter;
 import com.example.johnnie.ottawadriving.model.PersonModel;
 import com.example.johnnie.ottawadriving.userlogin.LogInPageActivity;
 import com.example.johnnie.ottawadriving.view.PagerSlidingTabStrip;
-
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -40,23 +42,23 @@ public class ExploreActivity extends AppCompatActivity
        // InsuranceFragment.OnInsuranceFragmentInteractionListener,
        // LawyerFragment.OnLawyerFragmentInteractionListener{
 
-    private PersonDbAdapter dbHelper;
+    //    private ArrayList<PersonModel> mModels;
+//    private DealerFragment mFragment;
+//    private PersonDbAdapter dbHelper;
     private ViewPager mViewPager;
     private PagerSlidingTabStrip tabs;
-    private ArrayList<PersonModel> mModels;
-    private DealerFragment mFragment;
-    Locale myLocale;
+    private Locale myLocale;
+    private SharedPreferences sharedPref;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_explore);
+        sharedPref = ExploreActivity.this.getSharedPreferences("FEDSa", Context.MODE_PRIVATE);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-
 
         // drawer and navigation view
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -71,13 +73,37 @@ public class ExploreActivity extends AppCompatActivity
         //set login on clicked event
         View headerLayout = navigationView.getHeaderView(0);
         View loginPart = headerLayout.findViewById(R.id.login_part);
-        loginPart.setOnClickListener(new View.OnClickListener() {
+
+
+        String token = sharedPref.getString("token", "notoken");
+        Log.d("GLOBALTOKEN", token);
+        //if user has logged in, has token,
+        if (!token.equalsIgnoreCase("notoken")) {
+            TextView logincontent = (TextView) loginPart.findViewById(R.id.login_content);
+            TextView loginUsername = (TextView) loginPart.findViewById(R.id.login_username);
+            String username = sharedPref.getString("username", "default");
+            String firstName = sharedPref.getString("firstName", "default");
+            logincontent.setText(firstName);
+            loginUsername.setText(username);
+            //show layout dialog
+            loginPart.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //show dialog
+                    ExploreActivity.this.createLogOutDialog().show();
+                }
+            });
+            //if user didn't logged in or token expired, no token, switch to login activity
+        } else {
+            loginPart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ExploreActivity.this, LogInPageActivity.class);
                 startActivity(intent);
             }
         });
+
+        }
 
 
         tabs = (PagerSlidingTabStrip) findViewById(R.id.activity_tab_universal_tabs);
@@ -90,8 +116,6 @@ public class ExploreActivity extends AppCompatActivity
             mViewPager.setAdapter(new MyFragmentPagerAdapter(getSupportFragmentManager(),this));
         }
         tabs.setViewPager(mViewPager);
-
-
 
 
     }
@@ -120,6 +144,37 @@ public class ExploreActivity extends AppCompatActivity
 
     }
      */
+
+
+    //return AlertDialog for logout
+    private AlertDialog createLogOutDialog() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                this);
+        alertDialogBuilder.setTitle("Log Out");
+        // set dialog message
+        alertDialogBuilder
+                .setMessage("Want to log out?")
+                .setCancelable(false)
+                .setPositiveButton("LogOut", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        SharedPreferences.Editor editor = sharedPref.edit();
+                        editor.putString("token", "notoken");
+                        editor.commit();
+                        Intent intent = new Intent(ExploreActivity.this, ExploreActivity.class);
+                        startActivity(intent);
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // if this button is clicked, just close
+                        // the dialog box and do nothing
+                        dialog.cancel();
+                    }
+                });
+        // create alert dialog
+        return alertDialogBuilder.create();
+    }
+
 
     // ======== back tab ======
     @Override
