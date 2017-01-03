@@ -108,7 +108,8 @@ public class UniversalTemplateFragment extends Fragment {
 
 
         if (isOnline()) {
-            String uri = "http://192.168.2.12:5000/api/businessMen?type=" + mTitle;
+            String IPAddress = getString(R.string.httpIPAddress);
+            String uri = "http://" + IPAddress + "/api/businessMen?type=" + mTitle;
             Log.d("LicenseFragment", uri);
             requestData(uri);
         } else {

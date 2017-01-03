@@ -55,7 +55,8 @@ public class RegisterPageActivity extends Activity implements View.OnClickListen
         params.put("password", password);
         params.put("firstName", firstName);
         params.put("lastName", lastName);
-        String uri = "http://192.168.2.12:5000/api/auth/register";
+        String IPAddress = getString(R.string.httpIPAddress);
+        String uri = "http://" + IPAddress + "/api/auth/register";
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, uri, new JSONObject(params),
 
                 new Response.Listener<JSONObject>() {

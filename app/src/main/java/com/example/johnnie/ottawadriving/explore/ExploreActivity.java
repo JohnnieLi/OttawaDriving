@@ -29,6 +29,7 @@ import com.example.johnnie.ottawadriving.listpagecomponent.UniversalTemplateFrag
 import com.example.johnnie.ottawadriving.listpagecomponent.DealerFragment;
 import com.example.johnnie.ottawadriving.localdatabase.PersonDbAdapter;
 import com.example.johnnie.ottawadriving.model.PersonModel;
+import com.example.johnnie.ottawadriving.myfavactivity.MyFavActivity;
 import com.example.johnnie.ottawadriving.userlogin.LogInPageActivity;
 import com.example.johnnie.ottawadriving.view.PagerSlidingTabStrip;
 import java.util.ArrayList;
@@ -241,6 +242,8 @@ public class ExploreActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
+            Intent intent = new Intent(this, MyFavActivity.class);
+            startActivity(intent);
 
         } else if (id == R.id.nav_gallery) {
 

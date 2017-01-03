@@ -62,9 +62,11 @@
         <activity
             android:name=".userlogin.RegisterPageActivity"
             android:theme="@style/AppTheme.NoActionBar">
-
         </activity>
 
+        <activity
+            android:name=".myfavactivity.MyFavActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

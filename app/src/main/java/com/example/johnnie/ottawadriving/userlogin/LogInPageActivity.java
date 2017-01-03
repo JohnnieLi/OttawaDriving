@@ -89,7 +89,8 @@ public class LogInPageActivity extends Activity implements View.OnClickListener 
         HashMap<String, String> params = new HashMap<String, String>();
         params.put("username", username);
         params.put("password", password);
-        String uri = "http://192.168.2.12:5000/api/auth/login";
+        String IPAddress = getString(R.string.httpIPAddress);
+        String uri = "http://" + IPAddress + "/api/auth/login";
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, uri, new JSONObject(params),
 
